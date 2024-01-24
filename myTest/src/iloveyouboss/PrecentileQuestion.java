@@ -1,3 +1,5 @@
+package iloveyouboss;
+
 public class PrecentileQuestion extends Question{
 
     public PrecentileQuestion(int id, String text, String[] answerChoices) {

@@ -1,3 +1,5 @@
+package iloveyouboss;
+
 public class Criterion implements Scoreable{
 
     private Weight weight;

@@ -1,3 +1,5 @@
+package iloveyouboss;
+
 public abstract class Question {
 
     private String text;
