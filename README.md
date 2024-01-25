@@ -31,7 +31,8 @@ public class AddressRetriever {
 ```
   위의 코드는 아래의 두 가지 문제를 안고 있다. 이를 해결해보자.
 
-  
+---
+
 ```java
 public class AddressRetrieverTest {
     @Test
