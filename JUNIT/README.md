@@ -36,3 +36,46 @@ public class AddressRetriever {
 * Nominatim HTTP API가 항상 가용한지 보장할 수 없다. 통제 밖의 것.
 
 ---
+
+```java
+public class AddressRetrieverTest {
+    @Test
+    public void answersAppropriateAddressForValidCoordinates()
+            throws IOException, ParseException, java.text.ParseException {
+        Http http = mock(Http.class);
+        when(http.get(contains("lat=38.000000&lon=-104.000000"))).thenReturn(
+                "{\"address\":{"
+                        + "\"house_number\":\"324\","
+                        // ...
+                        + "\"road\":\"North Tejon Street\","
+                        + "\"city\":\"Colorado Springs\","
+                        + "\"state\":\"Colorado\","
+                        + "\"postcode\":\"80903\","
+                        + "\"country_code\":\"us\"}"
+                        + "}");
+        AddressRetriever retriever = new AddressRetriever(http);
+
+        Address address = retriever.retrieve(38.0,-104.0);
+
+        assertThat(address.houseNumber, equalTo("324"));
+        assertThat(address.road, equalTo("North Tejon Street"));
+        assertThat(address.city, equalTo("Colorado Springs"));
+        assertThat(address.state, equalTo("Colorado"));
+        assertThat(address.zip, equalTo("80903"));
+    }
+}
+
+```
+## 목을 올바르게 사용할 때 중요한 것
+
+* 질문 리스트
+  * 목이 프로덕션 코드의 동작을 ㅇ올바르게 묘사하고 있는가?
+  * 프로덕션 코드는 생각하지 못한 다른 형식으로 반환하는가?
+  * 프로덕션 코드는 예외를 던지는가?
+  * null을 반환하는가?
+* 테스트가 진짜를 목을 사용할까? 우연하게 여전히 프로덕션 코드를 실행하고 있진 않은가?
+  -> 확인하고 싶다면 어떻게 해야 할까? 
+  * 프로덕션 코드에서 런타임 예외를 던져 보기!!
+  * 테스트를 실행할 때 예외가 보인다면 프로덕션 코드가 동작하고 있다는 것
+  * 테스트를 고친 뒤엔 꼭 throw문을 제거하기
+  * 
